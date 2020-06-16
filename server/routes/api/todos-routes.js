@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { checkTodo } = require("../../middleware/validation");
+const auth = require("../../middleware/auth");
 const {
   getTodosByUserId,
   createTodo,
@@ -9,10 +10,10 @@ const {
   markTodo
 } = require("../controllers/todos-controller");
 
-router.get("/user/:userId", getTodosByUserId);
-router.post("/", checkTodo, createTodo);
-router.put("/update/:todoId", checkTodo, updateTodo);
-router.put("/:todoId/done", markTodo);
-router.delete("/:todoId", deleteTodo);
+router.get("/user/:userId", auth, getTodosByUserId);
+router.post("/", [auth, checkTodo], createTodo);
+router.put("/update/:todoId", [auth, checkTodo], updateTodo);
+router.put("/:todoId/done", auth, markTodo);
+router.delete("/:todoId", auth, deleteTodo);
 
 module.exports = router;

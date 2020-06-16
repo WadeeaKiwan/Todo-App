@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
+
 const Todo = require("../../models/Todo");
 const User = require("../../models/User");
 
@@ -7,7 +8,7 @@ const getTodosByUserId = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    const todos = await Todo.find({ user: userId });
+    const todos = await Todo.find({ user: userId }).sort("-createdAt");
 
     if (!todos || todos.length === 0) {
       return res.status(404).json({ msg: "Could not find todo items for the provided user" });
@@ -29,7 +30,7 @@ const createTodo = async (req, res, next) => {
   const { title, description, category } = req.body;
 
   try {
-    const user = await User.findById("5ee876d6aa417d69e425a1df");
+    const user = await User.findById(req.userData.userId);
     if (!user) {
       return res.status(404).json({ msg: "Could not find user for the provided id." });
     }
@@ -38,7 +39,7 @@ const createTodo = async (req, res, next) => {
       title,
       description,
       category,
-      user: "5ee876d6aa417d69e425a1df"
+      user: req.userData.userId
     });
 
     // Add the created todo to the todos array of the user
