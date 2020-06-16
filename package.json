@@ -5,7 +5,8 @@
   "main": "/server/server.js",
   "scripts": {
     "server": "npm start --prefix server",
-    "dev": "concurrently \"npm run server\""
+    "dev": "concurrently \"npm run server\"",
+    "dependencies": "npm i && npm i --prefix server"
   },
   "repository": {
     "type": "git",
