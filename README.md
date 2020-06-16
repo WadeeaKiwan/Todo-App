@@ -8,7 +8,7 @@
 npm run dependencies
 ```
 
-## In the `server` folder, create `nodemon.json` file to store the `environment variables` of the backend that contains the following syntax:
+### In the `server` folder, create `nodemon.json` file to store the `environment variables` of the backend that contains the following syntax:
 
 ```
 {
