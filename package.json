@@ -1,0 +1,23 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "Todo Tasks Application with Authentication",
+  "main": "/server/server.js",
+  "scripts": {
+    "server": "npm start --prefix server",
+    "dev": "concurrently \"npm run server\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WadeeaKiwan/Todo-App.git"
+  },
+  "author": "Wadeea Kiwan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WadeeaKiwan/Todo-App/issues"
+  },
+  "homepage": "https://github.com/WadeeaKiwan/Todo-App#readme",
+  "devDependencies": {
+    "concurrently": "^5.2.0"
+  }
+}
