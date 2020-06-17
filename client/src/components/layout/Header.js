@@ -1,15 +1,27 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
 
-import { AppBar, Toolbar, IconButton, Typography, MenuItem, Menu, Button } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  MenuItem,
+  Menu,
+  Button,
+  withTheme
+} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import MoreIcon from "@material-ui/icons/MoreVert";
+
+import { connect } from "react-redux";
+import { logoutUser } from "../../redux/actions/userActions";
 
 const styles = (theme) => ({
   ...theme.styles,
@@ -28,10 +40,16 @@ const styles = (theme) => ({
   },
   navButtons: {
     padding: 0,
+    fontWeight: "bold",
     "& a": {
       textDecoration: "none",
       color: "inherit",
       padding: "0.4rem"
+    },
+    "& a.active": {
+      backgroundColor: "white",
+      color: theme.palette.primary.main,
+      borderRadius: 5
     }
   },
   sectionDesktop: {
@@ -48,7 +66,7 @@ const styles = (theme) => ({
   }
 });
 
-const Header = ({ classes }) => {
+const Header = ({ classes, isAuthenticated, logoutUser, history }) => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -72,70 +90,91 @@ const Header = ({ classes }) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem className={classes.navButtons}>
-        <Link to={"/signup"}>
-          <IconButton color='inherit'>
-            <MailIcon />
-          </IconButton>
-          Signup
-        </Link>
-      </MenuItem>
-      <MenuItem className={classes.navButtons}>
-        <Link to={"/login"}>
-          <IconButton color='inherit'>
-            <NotificationsIcon />
-          </IconButton>
-          Login
-        </Link>
-      </MenuItem>
-      <MenuItem className={classes.navButtons}>
-        <Link to={"/login"}>
-          <IconButton color='inherit'>
-            <AccountCircle />
-          </IconButton>
-          Dashboard
-        </Link>
-      </MenuItem>
-      <MenuItem className={classes.navButtons}>
-        <Link to={"/login"}>
-          <IconButton color='inherit'>
-            <PowerSettingsNewIcon />
-          </IconButton>
-          Logout
-        </Link>
-      </MenuItem>
+      {isAuthenticated ? (
+        <React.Fragment>
+          {" "}
+          <MenuItem className={classes.navButtons}>
+            <NavLink to={"/dashboard"}>
+              <IconButton color='inherit'>
+                <AccountCircle />
+              </IconButton>
+              Dashboard
+            </NavLink>
+          </MenuItem>
+          <MenuItem className={classes.navButtons}>
+            <Button onClick={() => logoutUser(history)}>
+              <IconButton color='inherit'>
+                <PowerSettingsNewIcon />
+              </IconButton>
+              Logout
+            </Button>
+          </MenuItem>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <MenuItem className={classes.navButtons}>
+            <NavLink to={"/signup"}>
+              <IconButton color='inherit'>
+                <MailIcon />
+              </IconButton>
+              Signup
+            </NavLink>
+          </MenuItem>
+          <MenuItem className={classes.navButtons}>
+            <NavLink to={"/login"}>
+              <IconButton color='inherit'>
+                <NotificationsIcon />
+              </IconButton>
+              Login
+            </NavLink>
+          </MenuItem>
+        </React.Fragment>
+      )}
     </Menu>
   );
 
   return (
     <AppBar position='static' className={classes.grow}>
       <Toolbar>
-        <Link to={"/"}>
+        <NavLink to={"/"}>
           {" "}
           <img
             src={"/assets/todo-icon-header.jpg"}
             alt='Todo Header Icon'
             className={classes.headerIcon}
           />
-        </Link>
+        </NavLink>
 
         <Typography className={classes.title} variant='h6' noWrap>
-          <Link to={"/"}>TodoApp</Link>
+          <NavLink to={"/"}>TodoApp</NavLink>
         </Typography>
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
-          <Button aria-label='signup user' color='inherit' className={classes.navButtons}>
-            <Link to={"/signup"}>Signup</Link>
-          </Button>
-          <Button aria-label='login user' color='inherit' className={classes.navButtons}>
-            <Link to={"/login"}>Login</Link>
-          </Button>
-          <Button edge='end' color='inherit' className={classes.navButtons}>
-            <Link to={"/dashboard"}>Dashboard</Link>
-          </Button>
-          <Button edge='end' color='inherit' className={classes.navButtons}>
-            <Link to={"/dashboard"}>Logout</Link>
-          </Button>
+          {isAuthenticated ? (
+            <React.Fragment>
+              {" "}
+              <Button edge='end' color='inherit' className={classes.navButtons}>
+                <NavLink to={"/dashboard"}>Dashboard</NavLink>
+              </Button>
+              <Button
+                edge='end'
+                color='inherit'
+                onClick={() => logoutUser(history)}
+                className={classes.navButtons}
+              >
+                <a href='!#'>Logout</a>
+              </Button>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Button aria-label='signup user' color='inherit' className={classes.navButtons}>
+                <NavLink to={"/signup"}>Signup</NavLink>
+              </Button>
+              <Button aria-label='login user' color='inherit' className={classes.navButtons}>
+                <NavLink to={"/login"}>Login</NavLink>
+              </Button>
+            </React.Fragment>
+          )}
         </div>
         <div className={classes.sectionMobile}>
           <IconButton
@@ -155,7 +194,13 @@ const Header = ({ classes }) => {
 };
 
 Header.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  logoutUser: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(Header);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.user.isAuthenticated
+});
+
+export default connect(mapStateToProps, { logoutUser })(withStyles(styles)(withRouter(Header)));

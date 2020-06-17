@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -13,12 +13,13 @@ import {
 } from "@material-ui/core";
 
 import { connect } from "react-redux";
+import { loginUser } from "../../redux/actions/userActions";
 
 const styles = (theme) => ({
   ...theme.styles
 });
 
-const Login = ({ classes, user: { loading } }) => {
+const Login = ({ classes, user: { loading, isAuthenticated }, loginUser }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -33,8 +34,12 @@ const Login = ({ classes, user: { loading } }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    await loginUser({ email, password });
   };
+
+  if (isAuthenticated) {
+    return <Redirect to={"/dashboard"} />;
+  }
 
   return (
     <Grow in timeout={800}>
@@ -93,6 +98,4 @@ const mapStateToProps = (state) => ({
   user: state.user
 });
 
-const mapActionsToProps = {};
-
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Login));
+export default connect(mapStateToProps, { loginUser })(withStyles(styles)(Login));

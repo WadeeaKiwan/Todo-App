@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 
@@ -15,10 +15,15 @@ import PrivateRoute from "./util/PrivateRoute";
 import Home from "./components/Home";
 import Signup from "./components/user/Signup";
 import Login from "./components/user/Login";
+import { loadUser } from "./redux/actions/userActions";
 
 const theme = createMuiTheme(themeFile);
 
 const App = () => {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
   return (
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>

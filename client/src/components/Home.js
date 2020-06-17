@@ -1,9 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
 import { Container, Typography, Grow } from "@material-ui/core";
+
+import { connect } from "react-redux";
 
 const styles = (theme) => ({
   ...theme.styles,
@@ -13,7 +15,11 @@ const styles = (theme) => ({
   }
 });
 
-const Home = ({ classes }) => {
+const Home = ({ classes, isAuthenticated }) => {
+  if (isAuthenticated) {
+    return <Redirect to={"/dashboard"} />;
+  }
+
   return (
     <Grow in timeout={800}>
       <Container maxWidth='lg' className={classes.appContainer}>
@@ -30,7 +36,12 @@ const Home = ({ classes }) => {
 };
 
 Home.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
-export default withStyles(styles)(Home);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.user.isAuthenticated
+});
+
+export default connect(mapStateToProps, {})(withStyles(styles)(Home));

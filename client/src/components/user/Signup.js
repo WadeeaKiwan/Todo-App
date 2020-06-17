@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -13,12 +13,13 @@ import {
 } from "@material-ui/core";
 
 import { connect } from "react-redux";
+import { signupUser } from "../../redux/actions/userActions";
 
 const styles = (theme) => ({
   ...theme.styles
 });
 
-const Signup = ({ classes, user: { loading } }) => {
+const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,8 +36,16 @@ const Signup = ({ classes, user: { loading } }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    if (password !== confirmPassword) {
+      console.log("Passwords do not match!");
+    } else {
+      await signupUser({ name, email, password });
+    }
   };
+
+  if (isAuthenticated) {
+    return <Redirect to={"/dashboard"} />;
+  }
 
   return (
     <Grow in timeout={800}>
@@ -108,13 +117,12 @@ const Signup = ({ classes, user: { loading } }) => {
 
 Signup.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  signupUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
   user: state.user
 });
 
-const mapActionsToProps = {};
-
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Signup));
+export default connect(mapStateToProps, { signupUser })(withStyles(styles)(Signup));
