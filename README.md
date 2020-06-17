@@ -13,7 +13,8 @@ npm run dependencies
 ```
 {
   "env": {
-    "MONGO_URI": "<mongodb database uri>"
+    "MONGO_URI": "<mongodb database uri>",
+    "JWT_SECRET": "<jsonwebtoken secret>"
   }
 }
 ```
