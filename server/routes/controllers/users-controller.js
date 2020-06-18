@@ -24,7 +24,7 @@ const getUsers = async (req, res, next) => {
       return res.status(404).json({ errors: [{ msg: "could not find users." }] });
     }
 
-    res.status(200).json({ users: users.map((user) => user.toObject({ getters: true })) });
+    res.status(200).json({ ...users.map((user) => user.toObject({ getters: true })) });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ errors: [{ msg: err.message }] });
@@ -53,13 +53,12 @@ const signupUser = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
-      image:
-        "https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg?ssl=1"
+      image: "https://vectorified.com/images/avatar-icon-png-31.png"
     });
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    res.status(201).json({ ...user.toObject({ getters: true }), token });
+    res.status(201).json({ user: user.toObject({ getters: true }), token });
   } catch (err) {
     console.error(err.message);
     return res.status(500).json({ errors: [{ msg: err.message }] });
@@ -74,7 +73,7 @@ const loginUser = async (req, res, next) => {
 
   const { email, password } = req.body;
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await await User.findOne({ email });
     if (!existingUser) {
       return res
         .status(422)
@@ -93,7 +92,7 @@ const loginUser = async (req, res, next) => {
       expiresIn: "1h"
     });
 
-    res.status(201).json({ ...existingUser.toObject({ getters: true }), token });
+    res.status(201).json({ user: existingUser.toObject({ getters: true }), token });
   } catch (err) {
     console.error(err.message);
     return res.status(500).json({ errors: [{ msg: err.message }] });

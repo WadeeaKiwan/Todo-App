@@ -4,16 +4,7 @@ import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
 
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  MenuItem,
-  Menu,
-  Button,
-  withTheme
-} from "@material-ui/core";
+import { AppBar, Toolbar, IconButton, Typography, MenuItem, Menu, Button } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -101,13 +92,11 @@ const Header = ({ classes, isAuthenticated, logoutUser, history }) => {
               Dashboard
             </NavLink>
           </MenuItem>
-          <MenuItem className={classes.navButtons}>
-            <Button onClick={() => logoutUser(history)}>
-              <IconButton color='inherit'>
-                <PowerSettingsNewIcon />
-              </IconButton>
-              Logout
-            </Button>
+          <MenuItem className={classes.navButtons} onClick={() => logoutUser(history)}>
+            <IconButton color='inherit'>
+              <PowerSettingsNewIcon />
+            </IconButton>
+            Logout
           </MenuItem>
         </React.Fragment>
       ) : (
@@ -162,7 +151,7 @@ const Header = ({ classes, isAuthenticated, logoutUser, history }) => {
                 onClick={() => logoutUser(history)}
                 className={classes.navButtons}
               >
-                <a href='!#'>Logout</a>
+                <a href='#!'>Logout</a>
               </Button>
             </React.Fragment>
           ) : (

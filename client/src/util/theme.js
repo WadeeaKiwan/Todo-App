@@ -17,9 +17,6 @@ export default {
     form: {
       textAlign: "center"
     },
-    image: {
-      margin: "20px auto 20px auto"
-    },
     pageTitle: {
       margin: "10px auto 10px auto",
       color: "#00bcd4"

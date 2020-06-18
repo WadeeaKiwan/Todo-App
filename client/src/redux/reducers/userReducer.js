@@ -10,6 +10,7 @@ import {
 } from "../types";
 
 const initialState = {
+  token: localStorage.getItem("token"),
   user: {},
   errors: null,
   isAuthenticated: false,
@@ -32,7 +33,8 @@ export default (state = initialState, action) => {
       localStorage.setItem("token", payload.token);
       return {
         ...state,
-        user: payload,
+        user: payload.user,
+        token: payload.token,
         isAuthenticated: true,
         loading: false
       };

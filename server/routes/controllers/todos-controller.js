@@ -10,14 +10,16 @@ const getTodosByUserId = async (req, res, next) => {
   try {
     const todos = await Todo.find({ user: userId }).sort("-createdAt");
 
-    if (!todos || todos.length === 0) {
-      return res.status(404).json({ msg: "Could not find todo items for the provided user" });
+    if (!todos) {
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "Could not find todo items for the provided user" }] });
     }
 
-    res.status(200).json({ todos: todos.map((todo) => todo.toObject({ getters: true })) });
+    res.status(200).json(todos.map((todo) => todo.toObject({ getters: true })));
   } catch (err) {
     console.error(err.message);
-    return res.status(500).json({ msg: err.message });
+    return res.status(500).json({ errors: [{ msg: err.message }] });
   }
 };
 
@@ -32,7 +34,9 @@ const createTodo = async (req, res, next) => {
   try {
     const user = await User.findById(req.userData.userId);
     if (!user) {
-      return res.status(404).json({ msg: "Could not find user for the provided id." });
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "Could not find user for the provided id." }] });
     }
 
     const newTodo = await new Todo({
@@ -50,10 +54,10 @@ const createTodo = async (req, res, next) => {
     await user.save({ session });
     await session.commitTransaction();
 
-    res.status(201).json({ todo: newTodo.toObject({ getters: true }) });
+    res.status(201).json(newTodo.toObject({ getters: true }));
   } catch (err) {
     console.error(err.message);
-    return res.status(500).json({ msg: err.message });
+    return res.status(500).json({ errors: [{ msg: err.message }] });
   }
 };
 
@@ -69,7 +73,9 @@ const updateTodo = async (req, res, next) => {
   try {
     const existingTodo = await Todo.findById(todoId);
     if (!existingTodo) {
-      return res.status(404).json({ msg: "This todo does not exist, please try another one" });
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "This todo does not exist, please try another one" }] });
     }
 
     existingTodo.title = title;
@@ -78,10 +84,10 @@ const updateTodo = async (req, res, next) => {
 
     const updatedTodo = await existingTodo.save();
 
-    res.status(200).json({ todo: updatedTodo.toObject({ getters: true }) });
+    res.status(200).json(updatedTodo.toObject({ getters: true }));
   } catch (err) {
     console.error(err.message);
-    return res.status(500).json({ msg: err.message });
+    return res.status(500).json({ errors: [{ msg: err.message }] });
   }
 };
 
@@ -97,17 +103,19 @@ const markTodo = async (req, res, next) => {
   try {
     const existingTodo = await Todo.findById(todoId);
     if (!existingTodo) {
-      return res.status(404).json({ msg: "This todo does not exist, please try another one" });
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "This todo does not exist, please try another one" }] });
     }
 
     existingTodo.done = done;
 
     const updatedTodo = await existingTodo.save();
 
-    res.status(200).json({ todo: updatedTodo.toObject({ getters: true }) });
+    res.status(200).json({ ...updatedTodo.toObject({ getters: true }) });
   } catch (err) {
     console.error(err.message);
-    return res.status(500).json({ msg: err.message });
+    return res.status(500).json({ errors: [{ msg: err.message }] });
   }
 };
 
@@ -117,7 +125,9 @@ const deleteTodo = async (req, res, next) => {
   try {
     const existingTodo = await Todo.findById(todoId).populate("user");
     if (!existingTodo) {
-      return res.status(404).json({ msg: "This todo does not exist, please try another one" });
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "This todo does not exist, please try another one" }] });
     }
 
     const session = await mongoose.startSession();
@@ -130,7 +140,7 @@ const deleteTodo = async (req, res, next) => {
     res.status(200).json({ msg: "Todo Item deleted successfully" });
   } catch (err) {
     console.error(err.message);
-    return res.status(500).json({ msg: err.message });
+    return res.status(500).json({ errors: [{ msg: err.message }] });
   }
 };
 

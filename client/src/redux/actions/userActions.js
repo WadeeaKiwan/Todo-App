@@ -12,12 +12,16 @@ import axios from "axios";
 import setLocalStorageToken from "../../util/setLocalStorageToken";
 
 export const loadUser = () => async (dispatch) => {
-  if (localStorage.token) {
-    setLocalStorageToken(localStorage.token);
-  }
+  // if (localStorage.token) {
+  //   setLocalStorageToken(localStorage.token);
+  // }
 
   try {
-    const res = await axios.get("http://localhost:5000/api/users");
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`
+      }
+    });
 
     dispatch({
       type: LOAD_USER,
@@ -25,10 +29,10 @@ export const loadUser = () => async (dispatch) => {
     });
   } catch (err) {
     console.error(err.message);
-    dispatch({
-      type: LOAD_USER_FAIL,
-      payload: err.response.data.errors
-    });
+    // dispatch({
+    //   type: LOAD_USER_FAIL,
+    //   payload: err.response.data.errors
+    // });
   }
 };
 
@@ -37,7 +41,7 @@ export const signupUser = (payload) => async (dispatch) => {
     dispatch({ type: USER_LOADING });
 
     const res = await axios.post(
-      `http://localhost:5000/api/users/signup`,
+      `${process.env.REACT_APP_BACKEND_URL}/users/signup`,
       JSON.stringify(payload),
       {
         headers: {
@@ -63,22 +67,28 @@ export const loginUser = (payload) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOADING });
 
-    const res = await axios.post(`http://localhost:5000/api/users/login`, JSON.stringify(payload), {
-      headers: {
-        "Content-Type": "application/json"
+    const res = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/users/login`,
+      JSON.stringify(payload),
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    });
+    );
 
     dispatch({
       type: LOGIN_USER,
       payload: res.data
     });
+
+    dispatch(loadUser());
   } catch (err) {
     console.error(err.message);
-    dispatch({
-      type: LOGIN_USER_FAIL,
-      payload: err.response.data.errors
-    });
+    // dispatch({
+    //   type: LOGIN_USER_FAIL,
+    //   payload: err.response.data.errors
+    // });
   }
 };
 

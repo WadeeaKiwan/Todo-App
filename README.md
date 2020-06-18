@@ -24,3 +24,7 @@ npm run dependencies
 ```
 npm run dev
 ```
+
+### Combined deployment of both frontend and backend on one server of `Heroku`:
+
+https://todo-app2020.herokuapp.com/
