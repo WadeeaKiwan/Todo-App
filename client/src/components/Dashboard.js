@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 
@@ -7,10 +7,12 @@ import { Grow, Grid, Paper, Container, Typography } from "@material-ui/core";
 import { Mail, CalendarToday } from "@material-ui/icons";
 
 import TodoList from "../components/todos/TodoList";
+import TodoForm from "./todos/TodoForm";
+import SearchBar from "./SearchBar";
 
+import store from "../redux/store";
 import { connect } from "react-redux";
 import { getTodosByUserId } from "../redux/actions/todoActions";
-import TodoForm from "./todos/TodoForm";
 
 const styles = (theme) => ({
   ...theme.styles,
@@ -31,14 +33,27 @@ const styles = (theme) => ({
   }
 });
 
-const Dashboard = ({ classes, user, todos, loading, getTodosByUserId }) => {
+const Dashboard = ({ classes, user, todo: { todos, loading }, getTodosByUserId }) => {
+  const [todoSearch, setTodoSearch] = useState([]);
+
   useEffect(() => {
     getTodosByUserId(user.id);
   }, [getTodosByUserId, user.id]);
 
+  useEffect(() => {
+    store.subscribe(() => {
+      if (!store.getState().todo.searchText) {
+        setTodoSearch(store.getState().todo.todos);
+      } else {
+        setTodoSearch(store.getState().todo.filteredTodos);
+      }
+    });
+  }, []);
+
   return (
     <Grow in timeout={800}>
       <Container maxWidth='md'>
+        <SearchBar />
         <Grid container spacing={2}>
           <Grid item sm={4} xs={12}>
             <Paper>
@@ -58,7 +73,7 @@ const Dashboard = ({ classes, user, todos, loading, getTodosByUserId }) => {
           </Grid>
           <Grid item sm={8} xs={12}>
             <TodoForm edit={false} />
-            <TodoList todos={todos} loading={loading} />
+            <TodoList todos={todoSearch} loading={loading} />
           </Grid>
         </Grid>
       </Container>
@@ -69,15 +84,17 @@ const Dashboard = ({ classes, user, todos, loading, getTodosByUserId }) => {
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  todos: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
+  // todos: PropTypes.array.isRequired,
+  // loading: PropTypes.bool.isRequired,
+  todo: PropTypes.object.isRequired,
   getTodosByUserId: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
   user: state.user.user,
-  todos: state.todo.todos,
-  loading: state.todo.loading
+  // todos: state.todo.todos,
+  // loading: state.todo.loading
+  todo: state.todo
 });
 
 export default connect(mapStateToProps, { getTodosByUserId })(withStyles(styles)(Dashboard));

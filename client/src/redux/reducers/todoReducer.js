@@ -5,12 +5,15 @@ import {
   TODO_LOADING,
   UPDATE_TODO,
   MARK_TODO,
-  DELETE_TODO
+  DELETE_TODO,
+  SEARCH_TODOS
 } from "../types";
 
 const initialState = {
   todos: [],
+  filteredTodos: [],
   todo: {},
+  searchText: "",
   loading: false
 };
 
@@ -42,6 +45,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         todos: state.todos.filter((todo) => todo.id !== payload.todoId),
+        loading: false
+      };
+    case SEARCH_TODOS:
+      return {
+        ...state,
+        searchText: payload,
+        filteredTodos: state.todos.filter(
+          (todo) => todo.category.toLowerCase().indexOf(payload.toLowerCase()) !== -1
+        ),
         loading: false
       };
     case TODO_LOADING:

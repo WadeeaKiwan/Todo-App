@@ -12,6 +12,5 @@ body {
   min-height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   text-align: center;
 }

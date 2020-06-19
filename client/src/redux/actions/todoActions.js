@@ -5,7 +5,8 @@ import {
   CREATE_TODO,
   UPDATE_TODO,
   MARK_TODO,
-  DELETE_TODO
+  DELETE_TODO,
+  SEARCH_TODOS
 } from "../types";
 import axios from "axios";
 
@@ -130,5 +131,16 @@ export const deleteTodo = (todoId) => async (dispatch) => {
     });
   } catch (err) {
     console.error(err.message);
+  }
+};
+
+export const searchTodos = (searchText) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SEARCH_TODOS,
+      payload: searchText
+    });
+  } catch (error) {
+    console.log(error);
   }
 };

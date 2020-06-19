@@ -22,7 +22,7 @@ const Home = ({ classes, isAuthenticated }) => {
 
   return (
     <Grow in timeout={800}>
-      <Container maxWidth='lg' className={classes.appContainer}>
+      <Container maxWidth='lg'>
         <img src={"./assets/todo-icon.png"} alt='Todo Icon' className={classes.image} />
         <Typography variant='h2' className={classes.containerHeader}>
           Welcome To The Todo App
