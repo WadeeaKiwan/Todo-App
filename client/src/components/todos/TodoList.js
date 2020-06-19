@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -13,7 +13,7 @@ const styles = (theme) => ({
   }
 });
 
-const TodoLIst = ({ classes, todos, loading }) => {
+const TodoList = ({ classes, todos, loading }) => {
   return (
     <Container maxWidth='lg' className={classes.todoListContainer}>
       {loading ? (
@@ -37,10 +37,10 @@ const TodoLIst = ({ classes, todos, loading }) => {
   );
 };
 
-TodoLIst.propTypes = {
+TodoList.propTypes = {
   classes: PropTypes.object.isRequired,
   todos: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired
 };
 
-export default withStyles(styles)(TodoLIst);
+export default withStyles(styles)(TodoList);

@@ -1,5 +1,6 @@
 import {
   GET_TODOS,
+  GET_TODO,
   CREATE_TODO,
   TODO_LOADING,
   UPDATE_TODO,
@@ -16,14 +17,19 @@ const initialState = {
 export default (state = initialState, action) => {
   const { type, payload } = action;
 
-  let index;
-
   switch (type) {
-    case GET_TODOS:
     case UPDATE_TODO:
+    case GET_TODOS:
+    case MARK_TODO:
       return {
         ...state,
         todos: payload,
+        loading: false
+      };
+    case GET_TODO:
+      return {
+        ...state,
+        todo: payload,
         loading: false
       };
     case CREATE_TODO:
@@ -32,19 +38,10 @@ export default (state = initialState, action) => {
         todos: [payload, ...state.todos],
         loading: false
       };
-    case MARK_TODO:
-      index = state.todos.findIndex((todo) => todo.id === payload.id);
-      state.todos[index] = payload;
-
-      return {
-        ...state,
-        todo: payload,
-        loading: false
-      };
     case DELETE_TODO:
       return {
         ...state,
-        todos: state.todos.filter((todo) => todo.id !== payload),
+        todos: state.todos.filter((todo) => todo.id !== payload.todoId),
         loading: false
       };
     case TODO_LOADING:

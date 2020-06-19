@@ -5,17 +5,11 @@ import {
   USER_LOADING,
   SIGNUP_USER_FAIL,
   LOGIN_USER_FAIL,
-  LOAD_USER_FAIL,
   LOGOUT_USER
 } from "../types";
 import axios from "axios";
-import setLocalStorageToken from "../../util/setLocalStorageToken";
 
 export const loadUser = () => async (dispatch) => {
-  // if (localStorage.token) {
-  //   setLocalStorageToken(localStorage.token);
-  // }
-
   try {
     const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users`, {
       headers: {
@@ -29,10 +23,6 @@ export const loadUser = () => async (dispatch) => {
     });
   } catch (err) {
     console.error(err.message);
-    // dispatch({
-    //   type: LOAD_USER_FAIL,
-    //   payload: err.response.data.errors
-    // });
   }
 };
 
@@ -85,10 +75,10 @@ export const loginUser = (payload) => async (dispatch) => {
     dispatch(loadUser());
   } catch (err) {
     console.error(err.message);
-    // dispatch({
-    //   type: LOGIN_USER_FAIL,
-    //   payload: err.response.data.errors
-    // });
+    dispatch({
+      type: LOGIN_USER_FAIL,
+      payload: err.response.data.errors
+    });
   }
 };
 

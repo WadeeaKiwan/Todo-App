@@ -1,19 +1,20 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
 import { TextField, Button, CircularProgress, Slide } from "@material-ui/core";
 
 import { connect } from "react-redux";
-import { createTodo } from "../../redux/actions/todoActions";
+import { createTodo, updateTodo } from "../../redux/actions/todoActions";
 
 const styles = (theme) => ({
   ...theme.styles,
   todoForm: {
     display: "flex",
+    flexDirection: "column",
     "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-      width: "25ch"
+      margin: "0.5rem 0"
     }
   },
   todoButton: {
@@ -26,12 +27,14 @@ const styles = (theme) => ({
   }
 });
 
-const TodoForm = ({ classes, todo: { loading }, createTodo }) => {
+const TodoForm = ({ classes, loading, todo, createTodo, updateTodo, edit }) => {
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    category: ""
+    title: edit && todo ? todo.title : "",
+    description: edit && todo ? todo.description : "",
+    category: edit && todo ? todo.category : ""
   });
+
+  const history = useHistory();
 
   const { title, description, category } = formData;
 
@@ -42,7 +45,13 @@ const TodoForm = ({ classes, todo: { loading }, createTodo }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    createTodo({ title, description, category });
+    if (edit) {
+      updateTodo(todo.id, { title, description, category });
+      history.replace("/dashboard");
+    } else {
+      createTodo({ title, description, category });
+    }
+    setFormData({ title: "", description: "", category: "" });
   };
 
   return (
@@ -88,9 +97,20 @@ const TodoForm = ({ classes, todo: { loading }, createTodo }) => {
           className={classes.todoButton}
           disabled={loading}
         >
-          Add
+          {edit ? "Submit" : "Add"}
           {loading && <CircularProgress size={30} className={classes.todoProgress} />}
         </Button>
+        {edit && (
+          <Button
+            type='button'
+            variant='contained'
+            color='secondary'
+            className={classes.todoButton}
+            onClick={() => history.push("/dashboard")}
+          >
+            Cancel
+          </Button>
+        )}
       </form>
     </Slide>
   );
@@ -98,12 +118,16 @@ const TodoForm = ({ classes, todo: { loading }, createTodo }) => {
 
 TodoForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  loading: PropTypes.object.isRequired,
-  createTodo: PropTypes.func.isRequired
+  todo: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+  createTodo: PropTypes.func.isRequired,
+  updateTodo: PropTypes.func.isRequired,
+  edit: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  todo: state.todo
+  todo: state.todo.todo,
+  loading: state.todo.loading
 });
 
-export default connect(mapStateToProps, { createTodo })(withStyles(styles)(TodoForm));
+export default connect(mapStateToProps, { createTodo, updateTodo })(withStyles(styles)(TodoForm));

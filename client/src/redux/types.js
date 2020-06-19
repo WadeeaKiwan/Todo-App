@@ -9,6 +9,7 @@ export const LOGOUT_USER = "LOGOUT_USER";
 
 export const TODO_LOADING = "TODO_LOADING";
 export const GET_TODOS = "GET_TODOS";
+export const GET_TODO = "GET_TODO";
 export const CREATE_TODO = "CREATE_TODO";
 export const UPDATE_TODO = "UPDATE_TODO";
 export const MARK_TODO = "MARK_TODO";

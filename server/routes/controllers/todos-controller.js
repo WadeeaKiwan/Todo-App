@@ -23,6 +23,25 @@ const getTodosByUserId = async (req, res, next) => {
   }
 };
 
+const getTodo = async (req, res, next) => {
+  const { todoId } = req.params;
+
+  try {
+    const todo = await Todo.findById(todoId);
+
+    if (!todo) {
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "Could not find todo item for the provided id" }] });
+    }
+
+    res.status(200).json(todo.toObject({ getters: true }));
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).json({ errors: [{ msg: err.message }] });
+  }
+};
+
 const createTodo = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -84,7 +103,9 @@ const updateTodo = async (req, res, next) => {
 
     const updatedTodo = await existingTodo.save();
 
-    res.status(200).json(updatedTodo.toObject({ getters: true }));
+    const updatedTodos = await Todo.find({ user: updatedTodo.user });
+
+    res.status(200).json(updatedTodos.map((todo) => todo.toObject({ getters: true })));
   } catch (err) {
     console.error(err.message);
     return res.status(500).json({ errors: [{ msg: err.message }] });
@@ -101,7 +122,7 @@ const markTodo = async (req, res, next) => {
   const { done } = req.body;
 
   try {
-    const existingTodo = await Todo.findById(todoId);
+    const existingTodo = await await Todo.findById(todoId);
     if (!existingTodo) {
       return res
         .status(404)
@@ -112,7 +133,9 @@ const markTodo = async (req, res, next) => {
 
     const updatedTodo = await existingTodo.save();
 
-    res.status(200).json({ ...updatedTodo.toObject({ getters: true }) });
+    const updatedTodos = await Todo.find({ user: updatedTodo.user });
+
+    res.status(200).json(updatedTodos.map((todo) => todo.toObject({ getters: true })));
   } catch (err) {
     console.error(err.message);
     return res.status(500).json({ errors: [{ msg: err.message }] });
@@ -144,6 +167,7 @@ const deleteTodo = async (req, res, next) => {
   }
 };
 
+exports.getTodo = getTodo;
 exports.getTodosByUserId = getTodosByUserId;
 exports.createTodo = createTodo;
 exports.updateTodo = updateTodo;

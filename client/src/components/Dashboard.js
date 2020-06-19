@@ -57,7 +57,7 @@ const Dashboard = ({ classes, user, todos, loading, getTodosByUserId }) => {
             </Paper>
           </Grid>
           <Grid item sm={8} xs={12}>
-            <TodoForm />
+            <TodoForm edit={false} />
             <TodoList todos={todos} loading={loading} />
           </Grid>
         </Grid>
