@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -14,6 +15,7 @@ import {
   IconButton
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 import { connect } from "react-redux";
 import { markTodo, deleteTodo } from "../../redux/actions/todoActions";
@@ -34,24 +36,37 @@ const styles = (theme) => ({
     display: "flex",
     position: "relative"
   },
+  editButton: {
+    position: "absolute",
+    top: 5,
+    right: 60,
+    zIndex: 1
+  },
   deleteButton: {
     position: "absolute",
-    left: "90%",
+    top: 5,
+    right: 5,
     zIndex: 1
   },
   todoItemDetails: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  categoryBadge: {
+    color: "white",
+    backgroundColor: "orange",
+    padding: 5,
+    borderRadius: 5
   }
 });
 
 const TodoItem = ({ classes, todo, markTodo, deleteTodo }) => {
-  const [done, setToggleDone] = useState(false);
+  const [done, setDone] = useState(false);
   dayjs.extend(relativeTime);
 
   const handleTodoDone = () => {
-    setToggleDone(!done);
+    setDone(!done);
     markTodo(todo.id, { done });
   };
 
@@ -59,7 +74,16 @@ const TodoItem = ({ classes, todo, markTodo, deleteTodo }) => {
     <Grid item xs={12} className={classes.todoContainer}>
       <Slide in direction='up' timeout={1000}>
         <Card className={classes.todoCard}>
-          <IconButton onClick={() => deleteTodo(todo.id)} className={classes.deleteButton}>
+          <Link to={`/update-todo/${todo.id}`}>
+            <IconButton className={classes.editButton}>
+              <EditIcon color='primary' />
+            </IconButton>
+          </Link>
+          <IconButton
+            color='secondary'
+            onClick={() => deleteTodo(todo.id)}
+            className={classes.deleteButton}
+          >
             <DeleteIcon />
           </IconButton>
           <CardActionArea onClick={handleTodoDone}>
@@ -68,13 +92,17 @@ const TodoItem = ({ classes, todo, markTodo, deleteTodo }) => {
                 classes.cardContent
               }`}
             >
-              <Typography variant='h5' color='primary'>
+              <Typography variant='h5' color='primary' gutterBottom>
                 {todo.title}
               </Typography>
-              <Typography>{todo.description}</Typography>
+              <Typography gutterBottom>
+                <strong>Description:</strong> {todo.description}
+              </Typography>
               <div className={classes.todoItemDetails}>
-                <Typography color='textSecondary'>{dayjs(todo.createdAt).fromNow()}</Typography>
-                <Typography>{todo.category}</Typography>
+                <Typography color='textSecondary'>
+                  <strong>created</strong> {dayjs(todo.createdAt).fromNow()}
+                </Typography>
+                <Typography className={classes.categoryBadge}>{todo.category}</Typography>
               </div>
             </CardContent>
           </CardActionArea>

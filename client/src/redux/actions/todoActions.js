@@ -1,5 +1,6 @@
 import {
   GET_TODOS,
+  GET_TODO,
   TODO_LOADING,
   CREATE_TODO,
   UPDATE_TODO,
@@ -20,6 +21,25 @@ export const getTodosByUserId = (userId) => async (dispatch) => {
 
     dispatch({
       type: GET_TODOS,
+      payload: res.data
+    });
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
+export const getTodo = (todoId) => async (dispatch) => {
+  try {
+    dispatch({ type: TODO_LOADING });
+
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/todos/${todoId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`
+      }
+    });
+
+    dispatch({
+      type: GET_TODO,
       payload: res.data
     });
   } catch (err) {
@@ -104,10 +124,9 @@ export const deleteTodo = (todoId) => async (dispatch) => {
         Authorization: `Bearer ${localStorage.token}`
       }
     });
-
     dispatch({
       type: DELETE_TODO,
-      payload: res.data
+      payload: { ...res.data, todoId }
     });
   } catch (err) {
     console.error(err.message);
