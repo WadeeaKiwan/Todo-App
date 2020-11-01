@@ -12,7 +12,8 @@ import {
   Typography,
   Slide,
   CardActionArea,
-  IconButton
+  IconButton,
+  Tooltip
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
@@ -71,44 +72,49 @@ const TodoItem = ({ classes, todo, markTodo, deleteTodo }) => {
   };
 
   return (
-    <Grid item xs={12} className={classes.todoContainer}>
-      <Slide in direction='up' timeout={1000}>
-        <Card className={classes.todoCard}>
-          <Link to={`/update-todo/${todo.id}`}>
-            <IconButton className={classes.editButton}>
-              <EditIcon color='primary' />
-            </IconButton>
-          </Link>
-          <IconButton
-            color='secondary'
-            onClick={() => deleteTodo(todo.id)}
-            className={classes.deleteButton}
-          >
-            <DeleteIcon />
-          </IconButton>
-          <CardActionArea onClick={handleTodoDone}>
-            <CardContent
-              className={`${todo.done ? classes.completed : classes.inCompleted} ${
-                classes.cardContent
-              }`}
-            >
-              <Typography variant='h5' color='primary' gutterBottom>
-                {todo.title}
-              </Typography>
-              <Typography gutterBottom>
-                <strong>Description:</strong> {todo.description}
-              </Typography>
-              <div className={classes.todoItemDetails}>
-                <Typography color='textSecondary'>
-                  <strong>created</strong> {dayjs(todo.createdAt).fromNow()}
+    <Tooltip title="Click to mark the task" aria-label="mark to todo">
+      <Grid item xs={12} className={classes.todoContainer}>
+        <Slide in direction='up' timeout={1000}>
+          <Card className={classes.todoCard}>
+            <Link to={`/update-todo/${todo.id}`}>
+              <Tooltip title='Edit' aria-label="edit">
+                <IconButton className={classes.editButton}>
+                  <EditIcon color='primary' />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            <Tooltip title='Delete' aria-label="delete">
+              <IconButton
+                color='secondary'
+                onClick={() => deleteTodo(todo.id)}
+                className={classes.deleteButton}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+            <CardActionArea onClick={handleTodoDone}>
+              <CardContent
+                className={`${todo.done ? classes.completed : classes.inCompleted} ${classes.cardContent
+                  }`}
+              >
+                <Typography variant='h5' color='primary' gutterBottom>
+                  {todo.title}
                 </Typography>
-                <Typography className={classes.categoryBadge}>{todo.category}</Typography>
-              </div>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Slide>
-    </Grid>
+                <Typography gutterBottom>
+                  <strong>Description:</strong> {todo.description}
+                </Typography>
+                <div className={classes.todoItemDetails}>
+                  <Typography color='textSecondary'>
+                    <strong>created</strong> {dayjs(todo.createdAt).fromNow()}
+                  </Typography>
+                  <Typography className={classes.categoryBadge}>{todo.category}</Typography>
+                </div>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Slide>
+      </Grid>
+    </Tooltip>
   );
 };
 

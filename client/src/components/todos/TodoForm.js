@@ -56,7 +56,7 @@ const TodoForm = ({ classes, loading, todo, createTodo, updateTodo, edit }) => {
 
   return (
     <Slide in direction='up' timeout={1000}>
-      <form noValidate onSubmit={handleSubmit} className={classes.todoForm}>
+      <form onSubmit={handleSubmit} className={classes.todoForm}>
         <TextField
           id='title'
           name='title'
@@ -67,6 +67,7 @@ const TodoForm = ({ classes, loading, todo, createTodo, updateTodo, edit }) => {
           onChange={handleChange}
           fullWidth
           variant='outlined'
+          required
         ></TextField>
         <TextField
           id='description'
@@ -78,6 +79,7 @@ const TodoForm = ({ classes, loading, todo, createTodo, updateTodo, edit }) => {
           onChange={handleChange}
           fullWidth
           variant='outlined'
+          required
         ></TextField>
         <TextField
           id='category'
@@ -89,6 +91,7 @@ const TodoForm = ({ classes, loading, todo, createTodo, updateTodo, edit }) => {
           onChange={handleChange}
           fullWidth
           variant='outlined'
+          required
         ></TextField>
         <Button
           type='submit'

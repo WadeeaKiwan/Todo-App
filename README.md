@@ -18,6 +18,11 @@ npm run dependencies
   }
 }
 ```
+### In the `client` folder, create `.env` file to store the `environment variables` of the frontend that contains the following syntax:
+
+```
+REACT_APP_BACKEND_URL=<your backend server url>/api
+```
 
 ### Run the following command to start the app in the development mode:
 

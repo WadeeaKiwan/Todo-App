@@ -6,8 +6,6 @@ import { withStyles } from "@material-ui/core/styles";
 
 import { AppBar, Toolbar, IconButton, Typography, MenuItem, Menu, Button } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import MoreIcon from "@material-ui/icons/MoreVert";
 
@@ -100,25 +98,19 @@ const Header = ({ classes, isAuthenticated, logoutUser, history }) => {
           </MenuItem>
         </React.Fragment>
       ) : (
-        <React.Fragment>
-          <MenuItem className={classes.navButtons}>
-            <NavLink to={"/signup"}>
-              <IconButton color='inherit'>
-                <MailIcon />
-              </IconButton>
-              Signup
+          <React.Fragment>
+            <MenuItem className={classes.navButtons}>
+              <NavLink to={"/signup"}>
+                Signup
             </NavLink>
-          </MenuItem>
-          <MenuItem className={classes.navButtons}>
-            <NavLink to={"/login"}>
-              <IconButton color='inherit'>
-                <NotificationsIcon />
-              </IconButton>
-              Login
+            </MenuItem>
+            <MenuItem className={classes.navButtons}>
+              <NavLink to={"/login"}>
+                Login
             </NavLink>
-          </MenuItem>
-        </React.Fragment>
-      )}
+            </MenuItem>
+          </React.Fragment>
+        )}
     </Menu>
   );
 
@@ -155,15 +147,15 @@ const Header = ({ classes, isAuthenticated, logoutUser, history }) => {
               </Button>
             </React.Fragment>
           ) : (
-            <React.Fragment>
-              <Button aria-label='signup user' color='inherit' className={classes.navButtons}>
-                <NavLink to={"/signup"}>Signup</NavLink>
-              </Button>
-              <Button aria-label='login user' color='inherit' className={classes.navButtons}>
-                <NavLink to={"/login"}>Login</NavLink>
-              </Button>
-            </React.Fragment>
-          )}
+              <React.Fragment>
+                <Button aria-label='signup user' color='inherit' className={classes.navButtons}>
+                  <NavLink to={"/signup"}>Signup</NavLink>
+                </Button>
+                <Button aria-label='login user' color='inherit' className={classes.navButtons}>
+                  <NavLink to={"/login"}>Login</NavLink>
+                </Button>
+              </React.Fragment>
+            )}
         </div>
         <div className={classes.sectionMobile}>
           <IconButton

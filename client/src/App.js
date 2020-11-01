@@ -34,10 +34,10 @@ const App = () => {
           <main className='container'>
             <Switch>
               <Route exact path='/' component={Home} />
+              <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <Route exact path='/signup' component={Signup} />
               <Route exact path='/login' component={Login} />
               <PrivateRoute exact path='/update-todo/:todoId' component={EditTodo} />
-              <PrivateRoute exact path='/dashboard' component={Dashboard} />
             </Switch>
           </main>
           <Footer />

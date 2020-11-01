@@ -27,9 +27,9 @@ const Home = ({ classes, isAuthenticated }) => {
         <Typography variant='h2' className={classes.containerHeader}>
           Welcome To The Todo App
         </Typography>
-        <Typography>
+        <small>
           Please <Link to={"/login"}>login</Link> to make your own todo list
-        </Typography>
+        </small>
       </Container>
     </Grow>
   );

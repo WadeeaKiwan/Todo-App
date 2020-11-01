@@ -54,7 +54,7 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
         <Typography variant='h3' className={classes.pageTitle}>
           Signup
         </Typography>
-        <form noValidate onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <TextField
             id='name'
             name='name'
@@ -64,6 +64,7 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
             value={name}
             onChange={handleChange}
             fullWidth
+            required
           ></TextField>
           <TextField
             id='email'
@@ -74,6 +75,7 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
             value={email}
             onChange={handleChange}
             fullWidth
+            required
           ></TextField>
           <TextField
             id='password'
@@ -84,6 +86,7 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
             value={password}
             onChange={handleChange}
             fullWidth
+            required
           ></TextField>
           <TextField
             id='confirmPassword'
@@ -94,6 +97,7 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
             value={confirmPassword}
             onChange={handleChange}
             fullWidth
+            required
           ></TextField>
           <Button
             type='submit'
