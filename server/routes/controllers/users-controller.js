@@ -44,7 +44,7 @@ const signupUser = async (req, res, next) => {
     if (existingUser) {
       return res
         .status(422)
-        .json({ errors: [{ msg: "User exists already, please login instead." }] });
+        .json({ errors: [{ msg: "User already exists, please login instead." }] });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

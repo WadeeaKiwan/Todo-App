@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -9,7 +9,8 @@ import {
   Button,
   CircularProgress,
   Container,
-  Grow
+  Grow,
+  FormHelperText
 } from "@material-ui/core";
 
 import { connect } from "react-redux";
@@ -19,13 +20,52 @@ const styles = (theme) => ({
   ...theme.styles
 });
 
-const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => {
+// const errorHandler = (errors) => {
+//   let error = {};
+
+//   errors.map((error) => {
+//     if (error.param) {
+//       switch (error.param) {
+//         case "name":
+//           error = error.msg;
+//           console.log(error.msg);
+//           break;
+//         case "email":
+//           error = error.msg;
+//           console.log(error.msg);
+//           break;
+//         case "password":
+//           error = error.msg;
+//           console.log(error.msg);
+//           break;
+//         default:
+//           return;
+//       }
+//     } else {
+//       error = error.msg;
+//       console.log(error.msg);
+//     }
+//   });
+//   return error;
+// };
+
+const Signup = ({ classes, user: { loading, isAuthenticated, errors }, signupUser }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: ""
   });
+
+  const [errorsData, setErrorsData] = useState();
+
+  useEffect(() => {
+    if (errors) {
+      setErrorsData(errors);
+    }
+  }, [errors]);
+  console.log(errorsData);
+  // console.log(errorsData && errorsData.find((error) => error.param === "name").msg);
 
   const { name, email, password, confirmPassword } = formData;
 
@@ -37,7 +77,9 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {
-      console.log("Passwords do not match!");
+      return {
+        msg: "Passwords do not match!"
+      };
     } else {
       await signupUser({ name, email, password });
     }
@@ -65,6 +107,8 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
             onChange={handleChange}
             fullWidth
             required
+            error={errorsData && errorsData.some((error) => error.param === "name")}
+            helperText={errorsData && errorsData.length && errorsData.find((error) => error.param === "name").msg}
           ></TextField>
           <TextField
             id='email'
@@ -76,6 +120,7 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
             onChange={handleChange}
             fullWidth
             required
+            error={errorsData && errorsData.find((error) => error.param === "email")}
           ></TextField>
           <TextField
             id='password'
@@ -87,6 +132,8 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
             onChange={handleChange}
             fullWidth
             required
+            error={errorsData && errorsData.find((error) => error.param === "password")}
+          // helperText={errorsData.find((error) => error.param === "password")}
           ></TextField>
           <TextField
             id='confirmPassword'
@@ -98,7 +145,17 @@ const Signup = ({ classes, user: { loading, isAuthenticated }, signupUser }) => 
             onChange={handleChange}
             fullWidth
             required
+          // error={password !== confirmPassword}
           ></TextField>
+          {errors &&
+            errors.map(
+              (error) =>
+                !error.param && (
+                  <Typography key={error.msg} variant='body2' className={classes.customError}>
+                    {error.msg}
+                  </Typography>
+                )
+            )}
           <Button
             type='submit'
             variant='contained'

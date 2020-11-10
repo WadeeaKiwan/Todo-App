@@ -67,12 +67,12 @@ export const loginUser = (payload) => async (dispatch) => {
       }
     );
 
+    // dispatch(loadUser());
+
     dispatch({
       type: LOGIN_USER,
       payload: res.data
     });
-
-    dispatch(loadUser());
   } catch (err) {
     console.error(err.message);
     dispatch({
