@@ -6,7 +6,9 @@ import {
   UPDATE_TODO,
   MARK_TODO,
   DELETE_TODO,
-  SEARCH_TODOS
+  SEARCH_TODOS,
+  CREATE_TODO_FAIL,
+  UPDATE_TODO_FAIL
 } from "../types";
 
 const initialState = {
@@ -14,7 +16,8 @@ const initialState = {
   filteredTodos: [],
   todo: {},
   searchText: "",
-  loading: false
+  loading: false,
+  errors: null
 };
 
 export default (state = initialState, action) => {
@@ -61,6 +64,13 @@ export default (state = initialState, action) => {
         ...state,
         loading: true
       };
+    case CREATE_TODO_FAIL:
+    case UPDATE_TODO_FAIL:
+      return {
+        ...state,
+        loading: false,
+        errors: payload
+      }
     default:
       return state;
   }

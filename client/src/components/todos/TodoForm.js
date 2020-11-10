@@ -56,7 +56,7 @@ const TodoForm = ({ classes, loading, todo, createTodo, updateTodo, edit }) => {
 
   return (
     <Slide in direction='up' timeout={1000}>
-      <form onSubmit={handleSubmit} className={classes.todoForm}>
+      <form noValidate onSubmit={handleSubmit} className={classes.todoForm}>
         <TextField
           id='title'
           name='title'
