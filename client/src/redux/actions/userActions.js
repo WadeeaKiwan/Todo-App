@@ -9,6 +9,8 @@ import {
 } from "../types";
 import axios from "axios";
 
+import { toast } from 'react-toastify';
+
 export const loadUser = () => async (dispatch) => {
   try {
     const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users`, {
@@ -45,7 +47,12 @@ export const signupUser = (payload) => async (dispatch) => {
       payload: res.data
     });
   } catch (err) {
-    console.error(err.message);
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => toast.error(error.msg));
+    }
+
     dispatch({
       type: SIGNUP_USER_FAIL,
       payload: err.response.data.errors
@@ -74,7 +81,12 @@ export const loginUser = (payload) => async (dispatch) => {
 
     dispatch(loadUser());
   } catch (err) {
-    console.error(err.message);
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => toast.error(error.msg));
+    }
+
     dispatch({
       type: LOGIN_USER_FAIL,
       payload: err.response.data.errors

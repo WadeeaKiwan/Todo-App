@@ -14,3 +14,12 @@ body {
   flex-direction: column;
   text-align: center;
 }
+
+.Toastify__toast-container--top-right {
+  top: 5em !important;
+}
+
+.Toastify__toast {
+  border-radius: 5px !important;
+  font-family: inherit !important;
+}

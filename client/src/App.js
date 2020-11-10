@@ -19,6 +19,9 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { loadUser } from "./redux/actions/userActions";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const theme = createMuiTheme(themeFile);
 
 const App = () => {
@@ -32,6 +35,7 @@ const App = () => {
         <Router>
           <Header />
           <main className='container'>
+            <ToastContainer limit={3} autoClose={3000} rtl />
             <Switch>
               <Route exact path='/' component={Home} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
