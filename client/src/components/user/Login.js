@@ -15,6 +15,8 @@ import {
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/userActions";
 
+import { toast } from 'react-toastify';
+
 const styles = (theme) => ({
   ...theme.styles
 });
@@ -48,7 +50,7 @@ const Login = ({ classes, user: { loading, isAuthenticated }, loginUser }) => {
         <Typography variant='h3' className={classes.pageTitle}>
           Login
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleSubmit}>
           <TextField
             id='email'
             name='email'
