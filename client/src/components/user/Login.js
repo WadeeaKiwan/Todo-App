@@ -15,8 +15,6 @@ import {
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/userActions";
 
-import { toast } from 'react-toastify';
-
 const styles = (theme) => ({
   ...theme.styles
 });

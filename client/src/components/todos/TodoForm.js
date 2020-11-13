@@ -45,13 +45,21 @@ const TodoForm = ({ classes, loading, todo, createTodo, updateTodo, edit }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (edit) {
-      updateTodo(todo.id, { title, description, category });
-      history.replace("/dashboard");
+    if (title === "" || description === "" || category === "") {
+      if (edit) {
+        updateTodo(todo.id, { title, description, category });
+      } else {
+        createTodo({ title, description, category });
+      }
     } else {
-      createTodo({ title, description, category });
+      if (edit) {
+        updateTodo(todo.id, { title, description, category });
+        history.replace("/dashboard");
+      } else {
+        createTodo({ title, description, category });
+        setFormData({ title: "", description: "", category: "" });
+      }
     }
-    setFormData({ title: "", description: "", category: "" });
   };
 
   return (
