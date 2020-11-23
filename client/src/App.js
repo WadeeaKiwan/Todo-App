@@ -35,7 +35,7 @@ const App = () => {
         <Router>
           <Header />
           <main className='container'>
-            <ToastContainer limit={3} autoClose={3000} rtl />
+            <ToastContainer limit={3} autoClose={3000} />
             <Switch>
               <Route exact path='/' component={Home} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
