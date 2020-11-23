@@ -1,5 +1,7 @@
 # Todo-App
 
+![TodoApp Demo](./assets/todoapp-demo.gif)
+
 ## To Start:
 
 ### Install the required packages by the following command:

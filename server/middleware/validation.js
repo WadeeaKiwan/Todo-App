@@ -12,9 +12,9 @@ const checkLogin = [
 ];
 
 const checkTodo = [
-  check("title", "Please provide a name").not().isEmpty(),
-  check("description", "Please provide a description").not().isEmpty(),
-  check("category", "Please provide a category").not().isEmpty()
+  check("title", "Title cannot be empty").not().isEmpty(),
+  check("description", "Description cannot be empty").not().isEmpty(),
+  check("category", "Category cannot be empty").not().isEmpty()
 ];
 
 exports.checkSignup = checkSignup;
