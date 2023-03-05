@@ -5,7 +5,7 @@ import "./App.css";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
+import { MuiThemeProvider, createTheme } from "@material-ui/core";
 import themeFile from "./util/theme";
 
 import PrivateRoute from "./util/PrivateRoute";
@@ -19,10 +19,10 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { loadUser } from "./redux/actions/userActions";
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const theme = createMuiTheme(themeFile);
+const theme = createTheme(themeFile);
 
 const App = () => {
   useEffect(() => {
