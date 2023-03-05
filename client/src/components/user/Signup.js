@@ -79,7 +79,7 @@ const Signup = ({ classes, user: { loading, isAuthenticated, errors }, signupUse
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {
-      console.log("Passwords do not match!");
+      toast.error("Passwords do not match!");
     } else {
       await signupUser({ name, email, password });
     }
