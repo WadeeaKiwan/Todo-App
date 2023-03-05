@@ -1,6 +1,6 @@
 {
   "name": "todo-app",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Todo Tasks Application with Authentication",
   "main": "/server/server.js",
   "scripts": {
