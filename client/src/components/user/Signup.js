@@ -16,6 +16,8 @@ import {
 import { connect } from "react-redux";
 import { signupUser } from "../../redux/actions/userActions";
 
+import { toast } from 'react-toastify';
+
 const styles = (theme) => ({
   ...theme.styles
 });
@@ -77,9 +79,7 @@ const Signup = ({ classes, user: { loading, isAuthenticated, errors }, signupUse
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {
-      return {
-        msg: "Passwords do not match!"
-      };
+      console.log("Passwords do not match!");
     } else {
       await signupUser({ name, email, password });
     }
@@ -96,7 +96,7 @@ const Signup = ({ classes, user: { loading, isAuthenticated, errors }, signupUse
         <Typography variant='h3' className={classes.pageTitle}>
           Signup
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleSubmit}>
           <TextField
             id='name'
             name='name'

@@ -45,18 +45,26 @@ const TodoForm = ({ classes, loading, todo, createTodo, updateTodo, edit }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (edit) {
-      updateTodo(todo.id, { title, description, category });
-      history.replace("/dashboard");
+    if (title === "" || description === "" || category === "") {
+      if (edit) {
+        updateTodo(todo.id, { title, description, category });
+      } else {
+        createTodo({ title, description, category });
+      }
     } else {
-      createTodo({ title, description, category });
+      if (edit) {
+        updateTodo(todo.id, { title, description, category });
+        history.replace("/dashboard");
+      } else {
+        createTodo({ title, description, category });
+        setFormData({ title: "", description: "", category: "" });
+      }
     }
-    setFormData({ title: "", description: "", category: "" });
   };
 
   return (
     <Slide in direction='up' timeout={1000}>
-      <form onSubmit={handleSubmit} className={classes.todoForm}>
+      <form noValidate onSubmit={handleSubmit} className={classes.todoForm}>
         <TextField
           id='title'
           name='title'

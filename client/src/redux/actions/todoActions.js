@@ -6,9 +6,13 @@ import {
   UPDATE_TODO,
   MARK_TODO,
   DELETE_TODO,
-  SEARCH_TODOS
+  SEARCH_TODOS,
+  CREATE_TODO_FAIL,
+  UPDATE_TODO_FAIL
 } from "../types";
 import axios from "axios";
+
+import { toast } from 'react-toastify';
 
 export const getTodosByUserId = (userId) => async (dispatch) => {
   try {
@@ -67,8 +71,19 @@ export const createTodo = (payload) => async (dispatch) => {
       type: CREATE_TODO,
       payload: res.data
     });
+
+    toast.success("Todo Created Successfully");
   } catch (err) {
-    console.error(err.message);
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => toast.error(error.msg));
+    }
+
+    dispatch({
+      type: CREATE_TODO_FAIL,
+      payload: err.response.data.errors
+    });
   }
 };
 
@@ -91,8 +106,19 @@ export const updateTodo = (todoId, payload) => async (dispatch) => {
       type: UPDATE_TODO,
       payload: res.data
     });
+
+    toast.success("Todo Updated Successfully");
   } catch (err) {
-    console.error(err.message);
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => toast.error(error.msg));
+    }
+
+    dispatch({
+      type: UPDATE_TODO_FAIL,
+      payload: err.response.data.errors
+    });
   }
 };
 
@@ -129,6 +155,8 @@ export const deleteTodo = (todoId) => async (dispatch) => {
       type: DELETE_TODO,
       payload: { ...res.data, todoId }
     });
+
+    toast.success("Todo Deleted Successfully");
   } catch (err) {
     console.error(err.message);
   }

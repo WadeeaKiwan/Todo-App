@@ -48,7 +48,7 @@ const Login = ({ classes, user: { loading, isAuthenticated }, loginUser }) => {
         <Typography variant='h3' className={classes.pageTitle}>
           Login
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleSubmit}>
           <TextField
             id='email'
             name='email'
